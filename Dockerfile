@@ -7,7 +7,7 @@ FROM  ubuntu:latest
 # - openssh: For SSH functionality, often useful for secure connections
 # We use --no-cache to prevent apk from caching the index files, which reduces the image size.
 RUN apt update && apt upgrade -y && \
-    apt install -y --no-cache curl git less openssh && \
+    apt install -y  curl git less openssh && \
     # Download kubectl binary for Kubernetes version v1.18.6 (you can change the version if needed)
     sudo apt-get install -y apt-transport-https ca-certificates curl gnupg && \
     curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg && \
