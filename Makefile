@@ -1,6 +1,6 @@
 # Image URL to use for building/pushing images
 TAG ?= latest
-IMG ?= gitopsbook/example-operator:${TAG}
+IMG ?= santonix/example-operator:${TAG}
 
 # Default target
 .PHONY: all
