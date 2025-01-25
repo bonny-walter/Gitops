@@ -9,12 +9,11 @@ RUN apk add --no-cache \
     openssh-client \
     gnupg \
     && \
-    # Add Kubernetes APT repository key and install kubectl
-    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg && \
-    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' > /etc/apt/sources.list.d/kubernetes.list && \
-    apk add --no-cache kubectl && \
+    # Install kubectl directly from the Kubernetes release
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
     # Clean up
-    rm -rf /var/cache/apk/*
+    rm -f kubectl
 
 # Create a mount point for the volume
 VOLUME /workspace
