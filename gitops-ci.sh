@@ -8,7 +8,7 @@ docker build -t ${NEW_IMAGE} . qq
 docker push ${NEW_IMAGE}
 
 git clone https://github.com/bonny-walter/Gitops.git
-cd sample-app-deployment || exit
+cd Gitops  || exit
 
 kubectl patch \
   --local \
