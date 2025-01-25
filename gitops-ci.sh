@@ -7,7 +7,7 @@ export NEW_IMAGE="gitopsbook/sample-app:${VERSION}"
 docker build -t ${NEW_IMAGE} .
 docker push ${NEW_IMAGE}
 
-git clone http://github.com/gitopsbook/sample-app-deployment.git
+git clone https://github.com/bonny-walter/Gitops.git
 cd sample-app-deployment || exit
 
 kubectl patch \
