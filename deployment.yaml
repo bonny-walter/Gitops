@@ -16,7 +16,7 @@ spec:
       containers:
       - command:
         - /app/sample-app
-        image: santonix/sample-app:3c00dd1
+        image: santonix/sample-app:c4ac966
         name: sample-app
         ports:
         - containerPort: 8080
