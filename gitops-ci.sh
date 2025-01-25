@@ -4,7 +4,7 @@ make build
 make test
 
 export NEW_IMAGE="santonix/sample-app:${VERSION}"
-docker build -t ${NEW_IMAGE} .
+docker build -t ${NEW_IMAGE} . qq
 docker push ${NEW_IMAGE}
 
 git clone https://github.com/bonny-walter/Gitops.git
