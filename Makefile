@@ -1,5 +1,5 @@
 # Image URL to use for building/pushing images
-IMG ?= santonix/example-operator
+IMG ?= gitopsbook/example-operator
 
 # Get the current commit hash to use as the tag
 TAG := $(shell git rev-parse --short HEAD)

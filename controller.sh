@@ -3,10 +3,10 @@
 kubectl get --watch --output-watch-events configmap \
 -o=custom-columns=type:type,name:object.metadata.name \
 --no-headers | \
-while read next; do                                        #B
+while read -r next; do                                        #B
 
-    NAME=$(echo $next | cut -d' ' -f2 | tr -d '.')                     #C
-    EVENT=$(echo $next | cut -d' ' -f1)
+    NAME=$(echo "$next" | cut -d' ' -f2 | tr -d '.')                     #C
+    EVENT=$(echo "$next" | cut -d' ' -f1)
 
     case $EVENT in
         ADDED|MODIFIED)                                    #D
@@ -36,7 +36,7 @@ spec:
 EOF
             ;;
         DELETED)                                            #E
-            kubectl delete deploy $NAME
+            kubectl delete deploy "$NAME"
             ;;
     esac
 done

@@ -1,19 +1,16 @@
-# Start with the official Alpine 3.15 image as the base image
-FROM alpine:3.15
+# Start with the official Ubuntu image as the base image
+FROM alpine:3.21.2
+
+
 
 # Install required dependencies
-RUN apk add --no-cache \
-    curl \
-    git \
-    less \
-    openssh-client \
-    gnupg \
-    && \
-    # Install kubectl directly from the Kubernetes release
+RUN sudo apk update && sudo apk upgrade && \
+    sudo apk add curl && \
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-    install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
-    # Clean up
-    rm -f kubectl
+    sudo chmod +x kubectl && \
+    sudo mv kubectl /usr/local/bin/
+
+   
 
 # Create a mount point for the volume
 VOLUME /workspace
