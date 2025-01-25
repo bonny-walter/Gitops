@@ -3,7 +3,7 @@ export VERSION=$(git rev-parse HEAD | cut -c1-7)
 make build
 make test
 
-export NEW_IMAGE="gitopsbook/sample-app:${VERSION}"
+export NEW_IMAGE="santonix/sample-app:${VERSION}"
 docker build -t ${NEW_IMAGE} .
 docker push ${NEW_IMAGE}
 
