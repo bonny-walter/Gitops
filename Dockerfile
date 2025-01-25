@@ -1,27 +1,16 @@
-# Start with the official Alpine 3.15 image as the base image
 # Start with the official Ubuntu image as the base image
-FROM ubuntu:20.04
+FROM alpine:3.21.2
 
-# Set environment variables for non-interactive installations
-ENV DEBIAN_FRONTEND=noninteractive
+
 
 # Install required dependencies
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-    curl \
-    git \
-    less \
-    openssh-client \
-    apt-transport-https \
-    ca-certificates \
-    gnupg && \
-    # Add Kubernetes APT repository and install kubectl
-    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg && \
-    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' > /etc/apt/sources.list.d/kubernetes.list && \
-    apt-get update && \
-    apt-get install -y kubectl && \
-    # Clean up to reduce image size
-    rm -rf /var/lib/apt/lists/*
+RUN sudo apk update && sudo apk upgrade && \
+    sudo apk add curl && \
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    sudo chmod +x kubectl && \
+    sudo mv kubectl /usr/local/bin/
+
+   
 
 # Create a mount point for the volume
 VOLUME /workspace
