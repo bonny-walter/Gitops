@@ -1,39 +1,56 @@
 #!/bin/bash
 
-# Variables
-TAG="latest"
-IMG="santonix/sample-app:${TAG}"
+# Exit immediately if a command exits with a non-zero status
+set -e
 
-# Step 1: Build the Docker image
-docker buildx build . -t ${IMG} || { echo "Docker build failed!"; exit 1; }
+# Get the current commit hash and set the version variable
+export VERSION=$(git rev-parse HEAD | cut -c1-7)
 
-# Step 2: Push the Docker image
-docker push ${IMG} || { echo "Docker push failed!"; exit 1; }
+# Build the application
+echo "Building the application..."
+make build
 
-# Step 3: Clone the repository (if not already cloned)
-if [ ! -d "Gitops" ]; then
-  git clone https://github.com/bonny-walter/Gitops.git || { echo "Git clone failed!"; exit 1; }
-else
-  echo "Directory 'Gitops' already exists, skipping clone."
+# Test the application
+echo "Running tests..."
+make test
+
+# Define the new Docker image
+export NEW_IMAGE="santonix/sample-app:${VERSION}"
+
+# Build and push the Docker image
+echo "Building Docker image: ${NEW_IMAGE}"
+docker build -t "${NEW_IMAGE}" .
+
+echo "Pushing Docker image: ${NEW_IMAGE}"
+docker push "${NEW_IMAGE}"
+
+# Clone the sample app deployment repository
+REPO_URL="https://github.com/bonny-walter/Gitops.git"
+if [ ! -d "sample-app-deployment" ]; then
+    echo "Cloning repository: ${REPO_URL}"
+    git clone "${REPO_URL}"
 fi
+cd Gitops
 
-cd Gitops || exit 1
+# Update the deployment.yaml with the new image
+echo "Updating deployment.yaml with the new image..."
+kubectl patch \
+  --local \
+  -o yaml \
+  -f deployment.yaml \
+  -p "spec:
+        template:
+          spec:
+            containers:
+            - name: sample-app
+              image: ${NEW_IMAGE}" \
+  > /tmp/newdeployment.yaml
 
-# Step 4: Apply patch (if exists)
-if [ -f "patch-file.patch" ]; then
-  git apply patch-file.patch || { echo "Failed to apply patch!"; exit 1; }
-else
-  echo "No patch file found, skipping."
-fi
+# Move the updated deployment file back
+mv /tmp/newdeployment.yaml deployment.yaml
 
-# Step 5: Check for deployment.yaml
-if [ ! -f "deployment.yaml" ]; then
-  echo "Error: deployment.yaml not found!"
-  exit 1
-fi
-
-# Step 6: Commit and push changes
+# Commit and push the changes
+echo "Committing and pushing changes to deployment.yaml..."
 git add deployment.yaml
-git commit -m "Updated deployment.yaml" || echo "No changes to commit."
-git pull origin main || { echo "Git pull failed!"; exit 1; }
-git push origin main || { echo "Git push failed!"; exit 1; }
+git commit -m "Update sample-app image to ${NEW_IMAGE}"
+git push
