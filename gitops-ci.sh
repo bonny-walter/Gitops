@@ -48,10 +48,11 @@ kubectl patch \
 
 # Move the updated deployment file back
 mv /tmp/newdeployment.yaml deployment.yaml
+rm -rf /home/bonny/LEARNING-FROM-BOOKS/GITOPS-KUBERNETES/ch-02/Gitops/Gitops
 
 # Commit and push the changes
 echo "Committing and pushing changes to deployment.yaml..."
 git add deployment.yaml
 git commit -m "Update sample-app image to ${NEW_IMAGE}"
 git push
-rm -rf Gitops
+
