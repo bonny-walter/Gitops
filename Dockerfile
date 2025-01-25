@@ -1,6 +1,6 @@
 # Start with the official Alpine 3.15 image as the base image
 # Start with the official Ubuntu image as the base image
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 # Set environment variables for non-interactive installations
 ENV DEBIAN_FRONTEND=noninteractive
