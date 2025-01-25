@@ -48,6 +48,7 @@ kubectl patch \
 
 # Move the updated deployment file back
 mv /tmp/newdeployment.yaml deployment.yaml
+cd ..
 rm -rf /home/bonny/LEARNING-FROM-BOOKS/GITOPS-KUBERNETES/ch-02/Gitops/Gitops
 
 # Commit and push the changes
