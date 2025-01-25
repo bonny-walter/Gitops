@@ -54,3 +54,4 @@ echo "Committing and pushing changes to deployment.yaml..."
 git add deployment.yaml
 git commit -m "Update sample-app image to ${NEW_IMAGE}"
 git push
+rm -rf Gitops
