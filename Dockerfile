@@ -6,7 +6,7 @@ FROM alpine:3.21.2
 # Install required dependencies
 RUN apk --update add git less curl openssh && \
     rm -rf /var/lib/apt/lists/* && \
-    rm /var/cache/apk/*
+    rm /var/cache/apk/* && \
     apk update && sudo apk upgrade && \
     
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
