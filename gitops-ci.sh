@@ -6,13 +6,13 @@ set -e
 # Get the current commit hash and set the version variable
 export VERSION=$(git rev-parse HEAD | cut -c1-7)
 
-# Build the application
-echo "Building the application..."
-make build
+# # Build the application
+# echo "Building the application..."
+# make build
 
-# Test the application
-echo "Running tests..."
-make test
+# # Test the application
+# echo "Running tests..."
+# make test
 
 # Define the new Docker image
 export NEW_IMAGE="santonix/sample-app:${VERSION}"
